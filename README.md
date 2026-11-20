@@ -1,3 +1,19 @@
+# Frame — Web Video Atölyesi
+
+**Yeni:** Tabletten kullanılabilen, cihazda render yapan web uygulaması `web/` dizininde.
+
+**[Web uygulamasını indir — v1.1.0](https://github.com/hamudenes9-debug/Claudevideo/releases/tag/v1.1.0)** · [Hızlı başlangıç](WEB_QUICKSTART.md)
+
+Bu ZIP bir Claude skill’i değildir; çıkarıp yerel sunucuyla veya HTTPS statik barındırmayla açılır.
+
+```sh
+python3 web/serve.py --port 3000
+```
+
+Fotoğraf/logo/ses yükleme, beş sahneli 16:9 önizleme, sahne düzenleme, 720p/1080p video kaydı (tarayıcıya göre WebM/MP4), beş PNG, ElevenLabs metni ve proje JSON'u desteklenir. İsteğe bağlı Gemini planlaması kendi API anahtarınızı gerektirir; ücret/kota hesaba bağlıdır. Anahtarsız yerel şablon kullanılabilir. [Web uygulaması kullanım ve gizlilik notları](web/README.md).
+
+---
+
 # Brand Video Skill (Claude için)
 
 Claude'a **16:9 marka videosunu kod çalıştırarak üretme** iş akışı kazandıran Türkçe skill. Ücretsiz yerel Pillow + FFmpeg motoru; API anahtarı gerektirmez.

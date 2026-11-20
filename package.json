@@ -1,0 +1,9 @@
+{
+  "name": "frame-video-workshop",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "python3 web/serve.py",
+    "test": "node --test web/plan.test.js"
+  }
+}

@@ -3,3 +3,7 @@ __pycache__/
 output/
 dist/
 *.pyc
+
+node_modules/
+playwright-report/
+test-results/

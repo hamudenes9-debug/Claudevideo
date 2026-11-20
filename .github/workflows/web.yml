@@ -1,0 +1,16 @@
+name: Test Frame web application
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - run: npm test
+      - run: node --check web/app.js
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: python -m py_compile web/serve.py

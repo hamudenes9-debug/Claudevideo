@@ -1,0 +1,28 @@
+name: Publish Frame Web v1.1.0
+on:
+  push:
+    branches: [arena/5db6424e-claudevideo]
+    paths: [.github/workflows/release-web.yml]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - run: npm test
+      - run: node --check web/app.js
+      - run: python -m py_compile web/serve.py
+      - run: python scripts/package-web.py
+      - name: Publish release and assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create v1.1.0 --target "${{ github.sha }}" --title "Frame Web v1.1.0 — Video Atölyesi" --notes-file WEB_RELEASE_NOTES.md
+          gh release upload v1.1.0 dist/frame-web-v1.1.0.zip dist/frame-web-SHA256SUMS.txt --clobber
