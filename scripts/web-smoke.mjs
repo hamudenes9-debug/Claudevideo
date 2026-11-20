@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs/promises";
 const browser = await playwright.launch({
   executablePath: await chromium.executablePath(),
-  args: chromium.args,
+  args: chromium.args.filter(arg => arg !== "--disable-web-security"),
   headless: true,
 });
 try {
@@ -16,7 +16,7 @@ try {
   });
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("http://127.0.0.1:3000");
+  await page.goto(process.env.FRAME_URL || "http://127.0.0.1:3000");
   await page.waitForSelector(".scene canvas");
   assert.equal(await page.locator(".scene").count(), 5);
   await page.locator("#brand").fill("TEST STÜDYO");

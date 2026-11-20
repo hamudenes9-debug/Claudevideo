@@ -4,6 +4,15 @@
   "type": "module",
   "scripts": {
     "start": "python3 web/serve.py",
-    "test": "node --test web/plan.test.js"
+    "test": "node --test web/*.test.js",
+    "build": "node scripts/build-web.mjs"
+  },
+  "dependencies": {
+    "three": "0.180.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.1",
+    "@sparticuz/chromium": "149.0.0",
+    "esbuild": "0.25.12"
   }
 }

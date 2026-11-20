@@ -1,16 +1,12 @@
-# Frame — Web Video Atölyesi
+# Frame Three.js — tek HTML video atölyesi
 
-**Yeni:** Tabletten kullanılabilen, cihazda render yapan web uygulaması `web/` dizininde.
+**[Tek HTML'yi indir — v1.2.0](https://github.com/hamudenes9-debug/Claudevideo/releases/download/v1.2.0/frame-three-v1.2.0.html)** · [Hızlı başlangıç](WEB_QUICKSTART.md)
 
-**[Web uygulamasını indir — v1.1.0](https://github.com/hamudenes9-debug/Claudevideo/releases/tag/v1.1.0)** · [Hızlı başlangıç](WEB_QUICKSTART.md)
+Three.js ile gerçek 3B sahne ve kamera hareketi. Kütüphane, CSS ve uygulama kodu tek HTML'nin içinde; CDN, Python ve kurulum gerektirmez. HTML'yi güncel tarayıcıda aç. Tablet dosya yöneticisi engelliyorsa aynı dosyayı HTTPS üzerinde aç. WebGL 2 ve video kaydı desteği gerekir.
 
-Bu ZIP bir Claude skill’i değildir; çıkarıp yerel sunucuyla veya HTTPS statik barındırmayla açılır.
+Fotoğraf/logo/ses, beş sahne, 16:9, 720p/1080p, WebM/MP4 (tarayıcıya göre), beş PNG, ElevenLabs metni ve proje JSON'u. Yerel düzenleme/render internet gerektirmez. Gemini analizi isteğe bağlıdır; internet ve kendi API anahtarınız gerekir. [Ayrıntılar](web/README.md).
 
-```sh
-python3 web/serve.py --port 3000
-```
-
-Fotoğraf/logo/ses yükleme, beş sahneli 16:9 önizleme, sahne düzenleme, 720p/1080p video kaydı (tarayıcıya göre WebM/MP4), beş PNG, ElevenLabs metni ve proje JSON'u desteklenir. İsteğe bağlı Gemini planlaması kendi API anahtarınızı gerektirir; ücret/kota hesaba bağlıdır. Anahtarsız yerel şablon kullanılabilir. [Web uygulaması kullanım ve gizlilik notları](web/README.md).
+Geliştiriciler: `npm ci && npm run build && npm test`. Dağıtım `web/index.html` ve `dist/frame-three-v1.2.0.html` olarak oluşturulur. Canlı önizleme için `python3 web/serve.py --port 3000` isteğe bağlıdır.
 
 ---
 

@@ -1,3 +1,4 @@
+import { createStage } from "./stage.js";
 import { localPlan, validatePlan, elevenlabsText } from "./plan.js";
 const $ = (id) => document.getElementById(id);
 const canvas = $("canvas"),
@@ -24,6 +25,15 @@ let thumbsDirty = true,
   recorder = null,
   exportAudio = null,
   paintedTime = -1;
+let stage = null;
+try {
+  stage = createStage();
+} catch (error) {
+  status(
+    "Bu cihazda WebGL 2 başlatılamadı. Güncel bir tarayıcıda donanım hızlandırmayı etkinleştir.",
+    true,
+  );
+}
 const mimeTypes = [
   "video/mp4;codecs=avc1.42E01E,mp4a.40.2",
   "video/webm;codecs=vp9,opus",
@@ -37,7 +47,7 @@ const mime =
 $("format-note").textContent = mime
   ? (mime.startsWith("video/mp4") ? "MP4" : "WEBM") + " · TARAYICI ÇIKTISI"
   : "VİDEO KAYDI DESTEKLENMİYOR";
-$("export").disabled = !mime || !canvas.captureStream;
+$("export").disabled = !stage || !mime || !canvas.captureStream;
 function status(message, error = false) {
   $("status").textContent = message;
   $("status").classList.toggle("error", error);
@@ -111,19 +121,6 @@ function fitted(c, text, width, start, min, maxLines) {
     }),
   };
 }
-function roundRect(c, x, y, w, h, r, fill) {
-  c.fillStyle = fill;
-  c.beginPath();
-  c.roundRect(x, y, w, h, r);
-  c.fill();
-}
-function cover(c, img, w, h, p) {
-  const z = 1.03 + p * 0.07;
-  const ratio = Math.max(w / img.width, h / img.height) * z;
-  const dw = img.width * ratio,
-    dh = img.height * ratio;
-  c.drawImage(img, (w - dw) / 2, (h - dh) / 2, dw, dh);
-}
 function drawScene(target, sceneIndex, progress) {
   const c = target.getContext("2d");
   const w = target.width,
@@ -137,100 +134,36 @@ function drawScene(target, sceneIndex, progress) {
   const bg = light ? "#e7e3d8" : plan.style === "bold" ? "#242925" : "#283328";
   c.fillStyle = bg;
   c.fillRect(0, 0, W, H);
-  if (photos[scene.photo]) {
-    cover(c, photos[scene.photo].image, W, H, progress);
-    const gradient = c.createLinearGradient(0, 0, W, 0);
-    gradient.addColorStop(
-      0,
-      light ? "rgba(232,228,218,.94)" : "rgba(20,30,23,.92)",
+  if (stage) {
+    stage.render(
+      c,
+      target.width,
+      target.height,
+      plan,
+      sceneIndex,
+      progress,
+      photos[scene.photo]?.image,
     );
-    gradient.addColorStop(
-      1,
-      light ? "rgba(232,228,218,.20)" : "rgba(20,30,23,.18)",
-    );
-    c.fillStyle = gradient;
-    c.fillRect(0, 0, W, H);
   } else {
-    // An original, deliberately illustrative architectural composition, not a real location.
-    const drift = Math.sin(progress * Math.PI) * 12;
-    c.save();
-    c.translate(drift, 0);
-    c.fillStyle = light ? "#c8c9b9" : "#3d4938";
-    c.beginPath();
-    c.moveTo(770, 0);
-    c.lineTo(1280, 0);
-    c.lineTo(1280, 720);
-    c.lineTo(770, 720);
-    c.closePath();
-    c.fill();
-    const wall = c.createLinearGradient(770, 0, 1280, 700);
-    wall.addColorStop(0, light ? "#d7d4c7" : "#4b5641");
-    wall.addColorStop(1, light ? "#b8bdac" : "#303c2d");
-    c.fillStyle = wall;
-    c.fillRect(790, 0, 490, 720);
-    c.fillStyle = light ? "#f3eddf" : "#adad87";
-    c.beginPath();
-    c.moveTo(945, 0);
-    c.lineTo(1115, 0);
-    c.lineTo(990, 720);
-    c.lineTo(765, 720);
-    c.closePath();
-    c.fill();
-    c.fillStyle = light ? "#c5bba5" : "#575e45";
-    c.beginPath();
-    c.moveTo(790, 540);
-    c.lineTo(1280, 440);
-    c.lineTo(1280, 720);
-    c.lineTo(790, 720);
-    c.closePath();
-    c.fill();
-    c.fillStyle = light ? "#e1d8c4" : "#899174";
-    c.beginPath();
-    c.roundRect(990, 150, 165, 370, [90, 90, 0, 0]);
-    c.fill();
-    c.fillStyle = light ? "#9eab98" : "#455540";
-    c.beginPath();
-    c.roundRect(1003, 164, 140, 343, [75, 75, 0, 0]);
-    c.fill();
-    c.strokeStyle = light ? "#e4decf" : "#98a080";
-    c.lineWidth = 3;
-    c.beginPath();
-    c.moveTo(1072, 168);
-    c.lineTo(1072, 507);
-    c.moveTo(1004, 330);
-    c.lineTo(1143, 330);
-    c.stroke();
-    c.fillStyle = plan.accent;
-    c.fillRect(867, 486, 224, 34);
-    c.fillStyle = light ? "#ac926d" : "#8b7857";
-    c.fillRect(882, 520, 13, 110);
-    c.fillRect(1061, 520, 13, 76);
-    roundRect(c, 1147, 509, 75, 108, 6, light ? "#a9967c" : "#6a7254");
-    c.strokeStyle = light ? "#64745c" : "#96a07a";
-    c.lineWidth = 4;
-    c.beginPath();
-    c.moveTo(1184, 516);
-    c.quadraticCurveTo(1175, 402, 1211, 344);
-    c.stroke();
-    for (let i = 0; i < 6; i++) {
-      c.save();
-      c.translate(1184 + i * 3, 470 - i * 19);
-      c.rotate((i % 2 ? 1 : -1) * 0.55);
-      c.fillStyle = i % 2 ? "#667952" : "#899b6e";
-      c.beginPath();
-      c.ellipse(i % 2 ? 18 : -18, 0, 26, 8, 0, 0, Math.PI * 2);
-      c.fill();
-      c.restore();
-    }
-    c.restore();
-    // Very subtle film grain, deterministic so exported frames do not shimmer.
-    c.fillStyle = light ? "#00000007" : "#ffffff08";
-    for (let i = 0; i < 500; i++) {
-      const x = (i * 137.3) % 1280,
-        y = (i * 73.9) % 720;
-      c.fillRect(x, y, 1, 1);
-    }
+    c.fillStyle = "#f3efe3";
+    c.font = "24px Arial";
+    c.fillText("3B önizleme için WebGL 2 gerekiyor.", 75, 600);
   }
+  const gradient = c.createLinearGradient(0, 0, W, 0);
+  gradient.addColorStop(
+    0,
+    light ? "rgba(232,228,218,.96)" : "rgba(20,30,23,.94)",
+  );
+  gradient.addColorStop(
+    0.55,
+    light ? "rgba(232,228,218,.76)" : "rgba(20,30,23,.72)",
+  );
+  gradient.addColorStop(
+    1,
+    light ? "rgba(232,228,218,.05)" : "rgba(20,30,23,.04)",
+  );
+  c.fillStyle = gradient;
+  c.fillRect(0, 0, W, H);
   const ink = light ? "#303b2c" : "#f3efe3";
   c.fillStyle = light ? "#6b765b" : "#d6d9bd";
   c.font = "14px Arial,sans-serif";
@@ -323,7 +256,7 @@ function refreshScenes() {
   $("scene-narration").value = plan.scenes[selected].narration;
   $("editing-label").textContent = `0${selected + 1} / SAHNEYİ DÜZENLE`;
   $("scene-photo").replaceChildren();
-  const empty = new Option("Özgün mekân çizimi", -1);
+  const empty = new Option("3B mekân sahnesi", -1);
   $("scene-photo").add(empty);
   photos.forEach((p, i) =>
     $("scene-photo").add(new Option(`${i + 1}. ${p.name}`, i)),
@@ -431,6 +364,7 @@ function loadImage(file) {
   });
 }
 function refreshPhotos() {
+  stage?.retain(photos.map((p) => p.image));
   $("asset-count").textContent = `${photos.length} / 8 görsel`;
   $("thumbnails").replaceChildren();
   photos.forEach((p, i) => {
@@ -672,7 +606,7 @@ function lockEditor(locked) {
     .forEach((el) => {
       if (el.id !== "cancel") el.disabled = locked;
     });
-  if (!locked) $("export").disabled = !mime || !canvas.captureStream;
+  if (!locked) $("export").disabled = !stage || !mime || !canvas.captureStream;
 }
 $("cancel").onclick = () => cancelRecording?.();
 $("export").onclick = async () => {

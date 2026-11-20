@@ -1,0 +1,25 @@
+name: Publish Three.js single HTML v1.2.0
+on:
+  push:
+    branches: [arena/5db6424e-claudevideo]
+    paths: [.github/workflows/release-html.yml]
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - run: cd dist && sha256sum frame-three-v1.2.0.html > frame-three-SHA256SUMS.txt
+      - name: Publish HTML
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create v1.2.0 --target "${{ github.sha }}" --title "Frame Three.js v1.2.0 — Tek HTML" --notes-file THREE_RELEASE_NOTES.md
+          gh release upload v1.2.0 dist/frame-three-v1.2.0.html dist/frame-three-SHA256SUMS.txt --clobber

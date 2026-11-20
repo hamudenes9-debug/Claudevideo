@@ -1,37 +1,16 @@
-# Frame Web v1.1.0 — başlangıç
+# Frame Three.js v1.2.0 — tek HTML
 
-**Bu bir web uygulamasıdır. ZIP'i Claude'un skill/eklenti ekranına yüklemeyin.**
+1. Release'ten **frame-three-v1.2.0.html** dosyasını indir.
+2. Güncel Chrome, Edge, Firefox veya Safari'de aç. Python, npm, ZIP çıkarma ve CDN gerekmez. Three.js, CSS ve uygulama kodu HTML'in içindedir.
+3. Marka/görsellerini ekle; yerel plan oluştur veya sahneleri kendin düzenle. Gerçek 3B oda temsili bir settir, fotoğraflardan mekân rekonstrüksiyonu yapılmaz.
+4. 720p ile başla, önizle, videoyu oluştur. Kayıt sırasında sekmeyi açık tut. MP4 desteklenmiyorsa WebM indirilir. Gerçek hız donanıma bağlıdır.
 
-## Windows
+WebGL 2 ve tarayıcı video kayıt desteği gerekir. Mobil dosya yöneticileri HTML'yi yalnızca önizleyebilir veya JavaScript'i engelleyebilir. Böyle bir durumda HTML'yi HTTPS statik barındırmada aç. Tablet üzerinde gerçek performans ayrıca denenmelidir.
 
-1. `frame-web-v1.1.0.zip` dosyasını tamamen çıkarın.
-2. Bilgisayarda Python 3.10 veya üzeri kurulu olmalı. Başka Python paketi, npm veya API anahtarı yerel kullanım için gerekmez.
-3. Çıkardığınız `frame-web` klasöründeki `BASLAT.bat` dosyasını çalıştırın.
-4. Sunucu açıldığında tarayıcıda **http://localhost:3000** adresine gidin. Komut penceresini açık tutun; kapatmak için Ctrl+C kullanın.
+Yerel düzenleme/çizim için internet gerekmez. Gemini analizi için internet, erişebildiğin model ve kendi API anahtarın gerekir. Dosya üzerinden API isteği bazı tarayıcılarda/anahtar kısıtlarında engellenirse HTTPS üzerinde kullan. Anahtarı sohbette paylaşma. Görseller yalnızca onayla Google'a gönderilir; kota/ücret hesabına aittir. Gerçek API çağrısı bu ortamda doğrulanmadı.
 
-## macOS / Linux
+Ses eklemezsen video sessizdir. Önizleme sessiz; eklenen ses video çıktısına eklenir. ElevenLabs düğmesi yalnızca TXT indirir. Beş PNG canlı animasyondan üretilir, eski bir videodan çıkarılmaz. Çoklu indirme izni gerekebilir.
 
-ZIP'i çıkarın. `frame-web` klasöründe terminal açıp `sh baslat.sh` çalıştırın. Python 3 gerekir. Tarayıcıda http://localhost:3000 adresini açın.
+Proje JSON'u sadece planı saklar; fotoğraf, logo, ses ve API anahtarını içermez. Yenilemeden önce planını kaydet, medyanı ayrıca sakla. Otomatik kaydetme yoktur.
 
-## Tablet
-
-- Aynı güvenilir Wi-Fi ağındaki bilgisayarda sunucuyu çalıştırın. Tablette `http://BILGISAYARIN-YEREL-IP-ADRESI:3000` adresini açabilirsiniz. Güvenlik duvarında yalnızca özel ağınıza izin verin. Bilgisayar sadece dosyaları sunar; video tableti açtığınız tarayıcıda oluşturulur.
-- Alternatif: ZIP içindeki `web/` klasörünü HTTPS destekli bir statik site barındırıcısına yayınlayın. Bu release otomatik kalıcı bir internet sitesi kurmaz.
-- Dosyayı tablete indirmek tek başına uygulamayı çalıştırmaz. ES modülleri nedeniyle index.html dosyasına dosya yöneticisinden dokunmak yerine HTTP(S) üzerinden açın.
-- Video kaydı tarayıcı/cihaza bağlıdır. HTTPS veya localhost önerilir; HTTP yerel ağda bazı tarayıcı özellikleri çalışmayabilir. Önce kısa bir kayıtla deneyin.
-
-## Başlangıç akışı
-
-Marka adı ve görselleri ekleyin → yerel sahne planı oluşturun → sahne başlıklarını düzenleyin → önizleyin → videoyu indirin. Varsayılan video sessizdir; isterseniz ses dosyası ekleyin. 720p ile başlayın. Kayıt süresince ekranı ve sekmeyi açık tutun.
-
-Gemini analizi isteğe bağlıdır. Kendi API anahtarınızı uygulamadaki parola alanına girin; sohbette paylaşmayın. API kotası/ücreti hesabınıza aittir. Görseller ve brief ancak onayınızla Google'a gönderilir. Anahtar projeye veya diske kaydedilmez.
-
-Proje JSON'u yalnızca sahne planını saklar; fotoğraf/logo/ses dosyalarını dahil etmez. Sayfayı yenilemeden önce kaydedin. Ayrıntılar için `web/README.md` dosyasını okuyun.
-
-## Çıktılar ve sınırlar
-
-- 16:9, 720p veya 1080p; tarayıcıya göre WebM veya MP4. MP4 her cihazda garanti edilmez.
-- Beş PNG, sahnelerin ortasından canlı renderer ile hazırlanır; mevcut video dosyasından çıkarılmaz. Çoklu indirme izni gerekebilir.
-- ElevenLabs için TXT; otomatik seslendirme veya ElevenLabs bağlantısı yoktur.
-- Yerel plan şablondur; fotoğrafları anlamaz. Gemini planı ise gönderilen görsellerin analizini kullanır.
-- Sunucu geliştirme/yerel kullanım içindir; genel internete doğrudan açmayın. Üretim için HTTPS statik barındırma ve uygun güvenlik yapılandırması kullanın.
+**Bu dosyayı Claude skill ekranına yükleme; bağımsız bir uygulamadır.**

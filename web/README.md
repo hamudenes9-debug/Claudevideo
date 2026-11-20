@@ -1,37 +1,36 @@
-# Frame — yerel web video atölyesi
+# Frame Three.js — tek HTML video atölyesi
 
-Türkçe, tablet uyumlu, vanilla HTML/CSS/JavaScript uygulaması. Build veya npm kurulumu gerektirmez.
+## Kullanıcı için
 
-## Başlat
+`index.html` tek başına tüm uygulamadır: Three.js 0.180.0, uygulama JavaScript'i, CSS ve lisanslar gömülüdür. CDN, modül dosyası, Python veya internet gerektirmez. İndirilen HTML'yi güncel tarayıcıda aç. [Hızlı başlangıç](../WEB_QUICKSTART.md).
 
-Depo kökünde `python3 web/serve.py --port 3000` çalıştır. Tarayıcıda sunucunun adresini aç. Statik dosyalar `web/` dizininden sunulur; skill dosyaları, API anahtarları veya Python renderer sunulmaz. İnternetten erişimde HTTPS kullanın. Geliştirme sunucusu kimlik doğrulama içermez; genel kullanıma açılacak üretim sunucusu değildir.
+- WebGL 2 ile gerçek 3B oda, mobilya, ışıklar, perspektif kamera ve kamera hareketi.
+- Fotoğraflar Three.js dokulu düzlem üzerinde merkezden kırpılan yavaş yakınlaşma ile gösterilir. Fotoğraftan 3B mekân çıkarılmaz.
+- Son görüntü, Türkçe metin ve logo için 2B Canvas'a kompozitlenir; video, PNG ve önizleme aynı renderer'ı kullanır.
+- Tek GPU bağlamı tekrar kullanılır; kaldırılan fotoğrafların GPU dokuları serbest bırakılır. Cihaz piksel oranı 1 ile sınırlandırılır. 720p önerilir; gerçek kare hızı donanıma bağlıdır.
+- Beş sahne; başlık, alt metin, anlatım, görsel, renk, süre ve görsel dil düzenlenebilir.
+- WebM/MP4 kaydı tarayıcı desteğine bağlıdır. Sekmeyi arka plana almak kaydı iptal eder. Eklenen ses sadece dışa aktarmada çalar; önizleme sessizdir.
+- Beş PNG canlı renderer'ın sahne ortalarından alınır; mevcut video dosyasından çıkarılmaz.
+- Proje kaydet/aç yalnızca JSON planını taşır. Medya ve anahtar dahil değildir.
 
-## Kullanım
+## Gemini ve güvenlik
 
-1. Marka, brief, görsel dil, renk ve 15/20/30 saniye süre seç.
-2. En fazla 8 fotoğraf ekle. İşleme sırasında en uzun kenar 1600px'e küçültülür; kaynak dosya değiştirilmez. Fotoğraflar merkezden kırpılarak yakınlaştırılır. Logo ve isteğe bağlı ses kaydı ekleyebilirsin.
-3. **Yerel sahne planı** sabit beş sahnelik örnek metin kullanır; brief veya fotoğraf analizi yapmaz. Başlıkları kendin düzenle veya Gemini kullan.
-4. Sahne kartını seçerek başlık, alt metin, anlatım ve görsel eşleşmesini düzenle. Başlıklar alana sığmak için küçültülür; çok uzun sözcüklerde kısaltma olabilir. Önizlemede kontrol et.
-5. 720p (önerilen) veya 1080p seçip videoyu oluştur. Kayıt gerçek zamanlıdır; sekmeyi açık tut. Arka plana geçiş kaydı iptal eder. Ekran kilidi engeli tarayıcı iznine bağlıdır.
-6. WebM veya destekleniyorsa MP4 indir. İndirdiğin dosyayı oynatarak doğrula. Her tarayıcı video kaydı desteklemez; bu durumda kayıt düğmesi pasif olur. MP4'e sunucu üzerinde dönüştürme yapılmaz.
+Gemini isteğe bağlıdır. Anahtar sadece sekmenin parola alanında tutulur; diske, localStorage'a veya projeye kaydedilmez. Brief ve küçültülmüş fotoğraflar onayın ardından doğrudan Google API'ye gönderilir; logo ve ses gönderilmez. Kota/ücret hesaba bağlıdır. Model yalnızca doğrulanan JSON üretir; modelden kod çalıştırılmaz. Anahtarı kendi cihazında kullan; ortak kullanımlı üretim uygulamasında kimlik doğrulamalı backend/anahtar yönetimi gerekir.
 
-## Ses ve beş kare
+Yerel plan sabit örnek metin kullanır, brief/fotoğraf analizi yapmaz. API'siz düzenleme/render çevrimdışı çalışır. Dosya üzerinden API veya indirme engellenirse HTML'yi HTTPS barındırmada aç. WebGL 2 desteği olmayan cihazlarda 3B render devre dışıdır. Tarayıcı/dosya yöneticisi izinleri nedeniyle tüm tabletlerde doğrudan dosya açılışı garanti edilmez.
 
-Önizleme sessizdir. Yüklenen ses, Web Audio üzerinden dışa aktarılan kayda eklenir; kısa ses bitince sessizlik olur, uzun ses video sonunda kesilir. Otomatik konuşma/TTS veya ses klonlama yok. ElevenLabs butonu okuma metni ve ayrı yönlendirme içeren TXT indirir, servise istek yapmaz.
+## Kaynak geliştirme
 
-Beş PNG, **canlı sahne renderer'ının her sahnenin orta anından** üretilir; yüklenmiş/önceden render edilmiş bir video dosyasından çıkarılmaz. Tarayıcı çoklu indirmeye izin isteyebilir. Python skill'indeki `frames` komutu, gerçek MP4'ten kare çıkarmak için kullanılabilir.
+Kaynaklar okunabilir şekilde ayrı tutulur; **dağıtım tek HTML'dir**.
 
-## Gemini ve gizlilik
+```sh
+npm ci
+npm run build
+npm test
+```
 
-- İsteğe bağlı bölümde kendi anahtarını ve erişebildiğin modeli gir. Varsayılan model adı `gemini-2.5-flash`; erişim hesabına ve servise bağlıdır, garanti edilmez.
-- İstek öncesi açık onay alınır. Brief/marka ve küçültülmüş fotoğraflar doğrudan Google Gemini API'ye gönderilir. Logo/ses gönderilmez. Kullanım kotası/faturalandırma Google hesabına aittir.
-- Anahtar yalnızca parola alanında bu sekmenin belleğinde tutulur. localStorage, proje JSON'u veya sunucuya yazılmaz. Kendi cihazında kullan; üretim uygulamalarında kişisel anahtar yerine kimlik doğrulamalı bir backend/key vault gerekir. Kod içine anahtar gömmeyin.
-- Arayüz, API'den **yalnızca doğrulanan JSON sahne planı** kabul eder. Kod çalıştırma/eval veya modelden gelen HTML'yi ekleme yoktur. Görsellerdeki gömülü talimatların uygulanmaması promptta belirtilir.
-- API yokken uygulama çalışır. API isteği dışındaki render yereldir. Çevrimdışı açılabilen PWA/service worker bu sürümde yoktur; açık sekmede yerel düzenleme API'ye ihtiyaç duymaz.
-- Projeyi kaydet/aç yalnızca planı taşır. Fotoğraf, logo, ses ve anahtar kaydedilmez; sayfayı yenilemeden önce planı indir. Otomatik kaydetme yoktur.
+`template.html`, `style.css`, `app.js`, `plan.js`, `stage.js` → `scripts/build-web.mjs` → `index.html` ve `dist/frame-three-v1.2.0.html`. Derleme için Node/internet gerekir, son kullanıcı için gerekmez. Three.js MIT lisansı HTML içine gömülür. Üretilmiş index.html'yi elle düzenlemek yerine kaynakları değiştirip tekrar derle.
 
-## Testler
+İsteğe bağlı canlı önizleme: `python3 web/serve.py --port 3000`. Sunucu sadece yerel geliştirme içindir. CSP, gömülü JavaScript'i SHA-256 hash'iyle yetkilendirir.
 
-`npm test` plan doğrulama testlerini çalıştırır. `node --check web/app.js` sözdizimini denetler.
-
-Opsiyonel tarayıcı testi: `npm install --no-save @playwright/test @sparticuz/chromium`, ardından sunucu açıkken `node scripts/web-smoke.mjs`. Linux Chromium sistem kütüphaneleri gerekir. Test masaüstü/mobil yerleşim, yükleme, sahne düzenleme, proje indirme, gerçek video kaydı ve mock Gemini yanıtlarını kontrol eder. Gerçek API çağrısı/gerçek tablet performansı ayrıca doğrulanmalıdır.
+Testler: `npm test` plan, tek dosya bütünlüğü ve JavaScript sözdizimini kontrol eder. Sunucu açıkken `node scripts/web-smoke.mjs` tarayıcı testini çalıştırır; Linux Chromium sistem kütüphaneleri gerekir. `FRAME_URL=file:///tam/yol/web/index.html node scripts/web-smoke.mjs` doğrudan dosya testidir. Mock Gemini başarı/kota yanıtları test edilir; gerçek Gemini API ve gerçek tablet performansı ayrıca doğrulanmalıdır.
