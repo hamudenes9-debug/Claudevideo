@@ -1,4 +1,4 @@
-# Claude Video Skill
+# Brand Video Skill (Claude için)
 
 Claude'a **16:9 marka videosunu kod çalıştırarak üretme** iş akışı kazandıran Türkçe skill. Ücretsiz yerel Pillow + FFmpeg motoru; API anahtarı gerektirmez.
 
@@ -14,7 +14,10 @@ Bu bir üretken fotogerçekçi video modeli değildir. Fotoğraf analizi Claude 
 
 ## Claude'a yükleme
 
-[Releases](https://github.com/hamudenes9-debug/Claudevideo/releases) sayfasından `claude-video-v1.0.0.zip` indirin. Skill/dosya yüklemesi ve kod çalıştırma destekleyen Claude ortamınızda özel skill olarak yükleyin. Arayüz, plan ve yönetici ayarlarına bağlı olarak skill desteği değişebilir. ZIP'in kökünde `claude-video/SKILL.md` bulunur. Manuel kurulum için bu klasörü ortamınızın skill dizinine kopyalayın. Çalıştırma izni olmayan sohbet yalnızca plan üretebilir.
+**v1.0.1 düzeltmesi:** Eski `claude-video` skill adı ayrılmış `claude` sözcüğü nedeniyle reddediliyordu. Yeni ad `brand-video`. Eski ZIP yerine aşağıdaki yeni kurulum ZIP'ini kullanın. **Demo ZIP'i yüklemeyin.**
+
+
+[Releases](https://github.com/hamudenes9-debug/Claudevideo/releases) sayfasından `brand-video-v1.0.1.zip` indirin. Skill/dosya yüklemesi ve kod çalıştırma destekleyen Claude ortamınızda özel skill olarak yükleyin. Arayüz, plan ve yönetici ayarlarına bağlı olarak skill desteği değişebilir. ZIP'in kökünde `brand-video/SKILL.md` bulunur. Manuel kurulum için bu klasörü ortamınızın skill dizinine kopyalayın. Çalıştırma izni olmayan sohbet yalnızca plan üretebilir.
 
 Örnek istek:
 
@@ -24,14 +27,14 @@ Bu bir üretken fotogerçekçi video modeli değildir. Fotoğraf analizi Claude 
 
 ```sh
 python -m venv .venv
-.venv/bin/python -m pip install -r skills/claude-video/requirements.txt
-.venv/bin/python skills/claude-video/scripts/render.py render skills/claude-video/examples/brand-demo.json --out output/demo
+.venv/bin/python -m pip install -r skills/brand-video/requirements.txt
+.venv/bin/python skills/brand-video/scripts/render.py render skills/brand-video/examples/brand-demo.json --out output/demo
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
 Windows'ta `.venv/bin/python` yerine `.venv\Scripts\python.exe` kullanın. Linux'ta DejaVu Sans yoksa plana `font` ve `font_bold` TTF yollarını ekleyin. İlk paket kurulumu internet ister; sonrasında render yereldir. imageio-ffmpeg desteklenmeyen platformlarda sistem FFmpeg kurun (PATH üzerinde `ffmpeg`).
 
-Kişiselleştirmek için örnek JSON'u kopyalayın; `photo`, `logo`, `font`, `font_bold`, `audio` yolları JSON konumuna göredir. [Plan formatı](skills/claude-video/references/plan-format.md) ve [iş akışı](skills/claude-video/references/workflow.md). Çıktı klasörü aynı adlarla üzerine yazılır; farklı projelere ayrı klasör seçin.
+Kişiselleştirmek için örnek JSON'u kopyalayın; `photo`, `logo`, `font`, `font_bold`, `audio` yolları JSON konumuna göredir. [Plan formatı](skills/brand-video/references/plan-format.md) ve [iş akışı](skills/brand-video/references/workflow.md). Çıktı klasörü aynı adlarla üzerine yazılır; farklı projelere ayrı klasör seçin.
 
 ## Ses
 

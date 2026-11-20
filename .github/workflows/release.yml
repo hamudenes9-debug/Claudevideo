@@ -1,4 +1,4 @@
-name: Package v1.0.0 release
+name: Package v1.0.1 release
 on:
   push:
     branches: [arena/5db6424e-claudevideo]
@@ -9,15 +9,17 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: '3.11'
-      - run: python -m pip install -r skills/claude-video/requirements.txt
+      - run: python -m pip install -r skills/brand-video/requirements.txt
       - run: python -m unittest discover -s tests -v
-      - run: python skills/claude-video/scripts/render.py render skills/claude-video/examples/brand-demo.json --out output/demo
+      - run: python skills/brand-video/scripts/render.py render skills/brand-video/examples/brand-demo.json --out output/demo
       - run: python scripts/package.py
       - name: Upload release assets
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release upload v1.0.0 dist/claude-video-v1.0.0.zip dist/claude-video-demo-v1.0.0.zip dist/SHA256SUMS.txt --clobber
+        run: |
+          gh release create v1.0.1 --target "${{ github.sha }}" --title "Brand Video v1.0.1 — Skill kurulum düzeltmesi" --notes-file RELEASE_NOTES.md
+          gh release upload v1.0.1 dist/brand-video-v1.0.1.zip dist/brand-video-demo-v1.0.1.zip dist/SHA256SUMS.txt --clobber

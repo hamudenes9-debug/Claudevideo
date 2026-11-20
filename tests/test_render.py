@@ -7,7 +7,7 @@ import unittest
 from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[1]
-spec = importlib.util.spec_from_file_location('render', ROOT/'skills/claude-video/scripts/render.py')
+spec = importlib.util.spec_from_file_location('render', ROOT/'skills/brand-video/scripts/render.py')
 r = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(r)
 
@@ -47,6 +47,26 @@ class RenderTests(unittest.TestCase):
             self.assertTrue(metadata['audio_attached'])
             # Decode full result (including AAC) to validate the actual container.
             subprocess.run([r.ffmpeg(),'-v','error','-i',str(base/'out/video.mp4'),'-f','null','-'],check=True)
+
+
+class PackageTests(unittest.TestCase):
+    def test_installable_zip_name_and_contents(self):
+        import re
+        import sys
+        from zipfile import ZipFile
+        subprocess.run([sys.executable, str(ROOT/'scripts/package.py')], check=True)
+        with ZipFile(ROOT/'dist/brand-video-v1.0.1.zip') as archive:
+            names = archive.namelist()
+            self.assertIn('brand-video/SKILL.md', names)
+            self.assertIn('brand-video/scripts/render.py', names)
+            self.assertFalse(any('__pycache__' in n for n in names))
+            text = archive.read('brand-video/SKILL.md').decode('utf-8')
+            metadata = text.split('---',2)[1]
+            name = re.search(r'^name: (.+)$', metadata, re.MULTILINE)[1]
+            self.assertRegex(name, r'^[a-z0-9-]{1,64}$')
+            self.assertEqual(name, 'brand-video')
+            for reserved in ('claude','anthropic'):
+                self.assertNotIn(reserved, name)
 
 if __name__ == '__main__':
     unittest.main()

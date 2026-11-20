@@ -1,5 +1,5 @@
 ---
-name: claude-video
+name: brand-video
 description: Create free, code-rendered 16:9 brand videos with original illustrations, photo-based animation, careful spatial continuity, Turkish typography, an ElevenLabs-ready narration prompt, and five actual video stills. Use for promotional videos, brand animations, photo-to-video storyboards, or landscape motion design.
 ---
 
