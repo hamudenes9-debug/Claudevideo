@@ -1,0 +1,14 @@
+{
+  "brand": "ÖRNEK STÜDYO",
+  "size": [1920, 1080],
+  "fps": 24,
+  "background": "#101c29",
+  "accent": "#efb86b",
+  "scenes": [
+    {"duration": 4, "title": "Bir fikirle başlar.", "subtitle": "Özgün tasarım. Sade anlatım.", "narration": "Her güçlü hikâye bir fikirle başlar."},
+    {"duration": 4, "drawing": "room", "title": "Mekânın ruhunu hisset.", "subtitle": "Temsili mekân çizimi", "narration": "Işık, doku ve mekân aynı dili konuşur."},
+    {"duration": 4, "title": "Detaylar fark yaratır.", "subtitle": "Renk, ritim ve denge.", "narration": "Her ayrıntı, markanın karakterini taşır."},
+    {"duration": 4, "title": "Hikâyeni harekete geçir.", "subtitle": "Kodla çizilen özgün animasyon", "narration": "Fikirler, sade ve akıcı bir anlatımla canlanır."},
+    {"duration": 4, "title": "Birlikte tasarlayalım.", "subtitle": "Markanın bir sonraki hikâyesi", "narration": "Şimdi kendi hikâyeni tasarlama zamanı."}
+  ]
+}
